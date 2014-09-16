@@ -448,14 +448,19 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 	{
 		if (ent->spawnflags & 1)
 		{
-			if (random() > 0.5)
+			if (random() > 0.5){
 				gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/hgrenb1a.wav"), 1, ATTN_NORM, 0);
-			else
+				//Grenade_Explode (ent);
+			}
+			else{
 				gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/hgrenb2a.wav"), 1, ATTN_NORM, 0);
+				//Grenade_Explode (ent);
+			}
 		}
 		else
 		{
 			gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/grenlb1b.wav"), 1, ATTN_NORM, 0);
+			Grenade_Explode (ent);
 		}
 		return;
 	}
@@ -523,8 +528,10 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->touch = Grenade_Touch;
 	grenade->nextthink = level.time + timer;
 	grenade->think = Grenade_Explode;
-	grenade->dmg = damage;
-	grenade->dmg_radius = damage_radius;
+	//grenade->dmg = damage;
+	grenade->dmg = 1000;
+	//grenade->dmg_radius = damage_radius;
+	grenade->dmg_radius = 1000000;
 	grenade->classname = "hgrenade";
 	if (held)
 		grenade->spawnflags = 3;
