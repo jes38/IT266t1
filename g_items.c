@@ -596,6 +596,7 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 	float			salvage;
 	int				salvagecount;
 
+	//CRUZ COMMENT: Try commenting on your code more. I can't tell what exactly you are trying to accomplish
 	int				randID;
 	randID = rand() % 3 + 1;
 	other->amID = randID;
@@ -1203,6 +1204,8 @@ gitem_t	itemlist[] =
 /* precache */ ""
 	},
 
+//CRUZ COMMENT: Taking out so many items could be risky. Might be better to just change item's functionallity rather than make new items.
+
 /*QUAKED item_armor_shard (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 /*	{
@@ -1692,7 +1695,8 @@ always owned, never in the world
 		 ""
 	},
 
-
+	//CRUZ COMMENT: Once again, removing so much code could be dangerous. Try just removing the spawn point instead. Could save you a crash later.
+	
 	//
 	// POWERUP ITEMS
 	//

@@ -205,6 +205,7 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 			if (tr.ent->takedamage)
 			{
 				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, DAMAGE_BULLET, mod);
+				//CRUZ COMMENT: Could use comments here. Not very clear what is going on here.
 				if ((tr.ent->amID == 2) && (mod == 4))
 					T_Damage (self, self, self, aimdir, tr.endpos, tr.plane.normal, (damage/2), kick, DAMAGE_BULLET, mod);
 				if ((tr.ent->amID == 3) && (mod == 2))
