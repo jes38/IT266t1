@@ -1,4 +1,5 @@
 #include "g_local.h"
+//#include "m_infantry.c"
 
 
 /*
@@ -204,6 +205,10 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 			if (tr.ent->takedamage)
 			{
 				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, DAMAGE_BULLET, mod);
+				if ((tr.ent->amID == 2) && (mod == 4))
+					T_Damage (self, self, self, aimdir, tr.endpos, tr.plane.normal, (damage/2), kick, DAMAGE_BULLET, mod);
+				if ((tr.ent->amID == 3) && (mod == 2))
+					T_Damage (self, self, self, aimdir, tr.endpos, tr.plane.normal, (damage/2), kick, DAMAGE_BULLET, mod);
 			}
 			else
 			{
@@ -307,6 +312,8 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 		else
 			mod = MOD_BLASTER;
 		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+		if (other->amID == 1)
+			T_Damage (self->owner, self, self->owner, self->velocity, self->s.origin, plane->normal, ((self->dmg)/2), 1, DAMAGE_ENERGY, mod);
 	}
 	else
 	{
@@ -319,6 +326,8 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 			gi.WriteDir (plane->normal);
 		gi.multicast (self->s.origin, MULTICAST_PVS);
 	}
+	fire_grenade (self->owner, self->s.origin, self->velocity, 60, 600, 0, 100, 0);
+	Grenade_Explode (self);
 
 	G_FreeEdict (self);
 }
@@ -351,10 +360,11 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;
-	bolt->nextthink = level.time + 2;
+	bolt->nextthink = level.time + 10;
 	bolt->think = G_FreeEdict;
 	bolt->dmg = damage;
 	bolt->classname = "bolt";
+
 	if (hyper)
 		bolt->spawnflags = 1;
 	gi.linkentity (bolt);
@@ -401,6 +411,8 @@ static void Grenade_Explode (edict_t *ent)
 		else
 			mod = MOD_GRENADE;
 		T_Damage (ent->enemy, ent, ent->owner, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
+		if (ent->enemy->amID == 1)
+			T_Damage (ent->owner, ent, ent->owner, dir, ent->s.origin, vec3_origin, (((int)points)/2), (int)points, DAMAGE_RADIUS, mod);
 	}
 
 	if (ent->spawnflags & 2)
@@ -435,6 +447,8 @@ static void Grenade_Explode (edict_t *ent)
 
 static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
+	edict_t	*infSpawnLoc;
+	
 	if (other == ent->owner)
 		return;
 
@@ -444,22 +458,32 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 		return;
 	}
 
+	infSpawnLoc = G_Spawn();
+	VectorCopy (ent->s.origin, infSpawnLoc->s.origin);
+	infSpawnLoc->s.origin[2] += 30;
+
 	if (!other->takedamage)
 	{
 		if (ent->spawnflags & 1)
 		{
 			if (random() > 0.5){
 				gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/hgrenb1a.wav"), 1, ATTN_NORM, 0);
-				//Grenade_Explode (ent);
+				SP_monster_infantry (infSpawnLoc);
+				Grenade_Explode (ent);
 			}
 			else{
 				gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/hgrenb2a.wav"), 1, ATTN_NORM, 0);
-				//Grenade_Explode (ent);
+				SP_monster_infantry (infSpawnLoc);
+				Grenade_Explode (ent);
 			}
 		}
 		else
 		{
 			gi.sound (ent, CHAN_VOICE, gi.soundindex ("weapons/grenlb1b.wav"), 1, ATTN_NORM, 0);
+			if (ent->owner->mobType == 2)
+				SP_monster_mutant (infSpawnLoc);
+			if (ent->owner->mobType == 3)
+				SP_monster_tank (infSpawnLoc);
 			Grenade_Explode (ent);
 		}
 		return;
@@ -469,7 +493,7 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 	Grenade_Explode (ent);
 }
 
-void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius)
+void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius, int grenType)
 {
 	edict_t	*grenade;
 	vec3_t	dir;
@@ -490,8 +514,10 @@ void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int s
 	grenade->s.effects |= EF_GRENADE;
 	VectorClear (grenade->mins);
 	VectorClear (grenade->maxs);
-	grenade->s.modelindex = gi.modelindex ("models/objects/grenade/tris.md2");
+	grenade->s.modelindex = gi.modelindex ("models/objects/grenade2/tris.md2");
 	grenade->owner = self;
+	if(grenType != 0)
+		self->mobType = grenType;
 	grenade->touch = Grenade_Touch;
 	grenade->nextthink = level.time + timer;
 	grenade->think = Grenade_Explode;
@@ -529,9 +555,8 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->nextthink = level.time + timer;
 	grenade->think = Grenade_Explode;
 	//grenade->dmg = damage;
-	grenade->dmg = 1000;
-	//grenade->dmg_radius = damage_radius;
-	grenade->dmg_radius = 1000000;
+	grenade->dmg = 0;
+	grenade->dmg_radius = damage_radius;
 	grenade->classname = "hgrenade";
 	if (held)
 		grenade->spawnflags = 3;

@@ -5,6 +5,8 @@ void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
 
+//line 1338, 1274
+
 //
 // Gross, ugly, disgustuing hack section
 //
@@ -1269,6 +1271,22 @@ void ClientBeginDeathmatch (edict_t *ent)
 	}
 
 	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "Welcome to the bare necessities mod!\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "In this mod you will find the following:\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "1: There is no ammo, and some weapons are missing\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "2: Your blaster fires explosive bolts\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "3: The Rifle fires slower than the Machinegun, yet with more accuracy and damage\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "4: The AutoShotgun fires in full auto and is more accurate than the Shotgun\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "5: All grenades spawn monsters instead of exploding\n");
+	gi.cprintf (ent, PRINT_HIGH, "\n");
+	gi.cprintf (ent, PRINT_HIGH, "6: Your armor will reflect a random damage type\n");
 
 	// make sure all view stuff is valid
 	ClientEndServerFrame (ent);

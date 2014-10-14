@@ -283,6 +283,7 @@ qboolean Pickup_Pack (edict_t *ent, edict_t *other)
 	}
 
 	item = FindItem("Grenades");
+	//item = FindItem("Infantry Grenades");
 	if (item)
 	{
 		index = ITEM_INDEX(item);
@@ -292,6 +293,7 @@ qboolean Pickup_Pack (edict_t *ent, edict_t *other)
 	}
 
 	item = FindItem("Rockets");
+	//item = FindItem("Large Monster Grenades");
 	if (item)
 	{
 		index = ITEM_INDEX(item);
@@ -593,6 +595,16 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 	int				newcount;
 	float			salvage;
 	int				salvagecount;
+
+	int				randID;
+	randID = rand() % 3 + 1;
+	other->amID = randID;
+	if(randID == 1)
+		gi.cprintf(other,PRINT_HIGH,"Blaster Relfection\n");
+	if(randID == 2)
+		gi.cprintf(other,PRINT_HIGH,"Machinegun Relfection\n");
+	if(randID == 3)
+		gi.cprintf(other,PRINT_HIGH,"Shotgun Relfection\n");
 
 	// get info on new armor
 	newinfo = (gitem_armor_t *)ent->item->info;
@@ -1193,7 +1205,7 @@ gitem_t	itemlist[] =
 
 /*QUAKED item_armor_shard (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_armor_shard", 
 		Pickup_Armor,
 		NULL,
@@ -1202,22 +1214,22 @@ gitem_t	itemlist[] =
 		"misc/ar2_pkup.wav",
 		"models/items/armor/shard/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"i_jacketarmor",
-/* pickup */	"Armor Shard",
-/* width */		3,
+		"i_jacketarmor",
+		"Armor Shard",
+		3,
 		0,
 		NULL,
 		IT_ARMOR,
 		0,
 		NULL,
 		ARMOR_SHARD,
-/* precache */ ""
-	},
+		""
+	}, */
 
 
 /*QUAKED item_power_screen (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_power_screen", 
 		Pickup_PowerArmor,
 		Use_PowerArmor,
@@ -1226,21 +1238,21 @@ gitem_t	itemlist[] =
 		"misc/ar3_pkup.wav",
 		"models/items/armor/screen/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"i_powerscreen",
-/* pickup */	"Power Screen",
-/* width */		0,
+		"i_powerscreen",
+		"Power Screen",
+		0,
 		60,
 		NULL,
 		IT_ARMOR,
 		0,
 		NULL,
 		0,
-/* precache */ ""
-	},
+		""
+	}, */
 
 /*QUAKED item_power_shield (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_power_shield",
 		Pickup_PowerArmor,
 		Use_PowerArmor,
@@ -1249,17 +1261,17 @@ gitem_t	itemlist[] =
 		"misc/ar3_pkup.wav",
 		"models/items/armor/shield/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"i_powershield",
-/* pickup */	"Power Shield",
-/* width */		0,
-		60,
+/* icon *///		"i_powershield",
+/* pickup *///	"Power Shield",
+/* width *///		0,
+/*		60,
 		NULL,
 		IT_ARMOR,
 		0,
 		NULL,
 		0,
-/* precache */ "misc/power2.wav misc/power1.wav"
-	},
+/* precache */// "misc/power2.wav misc/power1.wav"
+//	},
 
 
 	//
@@ -1301,8 +1313,9 @@ always owned, never in the world
 		"misc/w_pkup.wav",
 		"models/weapons/g_shotg/tris.md2", EF_ROTATE,
 		"models/weapons/v_shotg/tris.md2",
-/* icon */		"w_shotgun",
-/* pickup */	"Shotgun",
+		"w_shotgun",
+		//"Shotgun",
+		"Auto-Shotgun",
 		0,
 		1,
 		"Shells",
@@ -1317,15 +1330,18 @@ always owned, never in the world
 */
 	{
 		"weapon_supershotgun", 
-		Pickup_Weapon,
+		//Pickup_Weapon,
+		NULL,
 		Use_Weapon,
 		Drop_Weapon,
 		Weapon_SuperShotgun,
 		"misc/w_pkup.wav",
-		"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
-		"models/weapons/v_shotg2/tris.md2",
-/* icon */		"w_sshotgun",
-/* pickup */	"Super Shotgun",
+		//"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
+		"", 0,
+		//"models/weapons/v_shotg2/tris.md2",
+		"",
+		"w_sshotgun",
+		"Super Shotgun",
 		0,
 		2,
 		"Shells",
@@ -1333,7 +1349,7 @@ always owned, never in the world
 		WEAP_SUPERSHOTGUN,
 		NULL,
 		0,
-/* precache */ "weapons/sshotf1b.wav"
+		"weapons/sshotf1b.wav"
 	},
 
 /*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -1347,8 +1363,9 @@ always owned, never in the world
 		"misc/w_pkup.wav",
 		"models/weapons/g_machn/tris.md2", EF_ROTATE,
 		"models/weapons/v_machn/tris.md2",
-/* icon */		"w_machinegun",
-/* pickup */	"Machinegun",
+		"w_machinegun",
+		//"Machinegun",
+		"Rifle",
 		0,
 		1,
 		"Bullets",
@@ -1356,22 +1373,25 @@ always owned, never in the world
 		WEAP_MACHINEGUN,
 		NULL,
 		0,
-/* precache */ "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
+		"weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav"
 	},
 
 /*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"weapon_chaingun", 
-		Pickup_Weapon,
+		//Pickup_Weapon,
+		NULL,
 		Use_Weapon,
 		Drop_Weapon,
 		Weapon_Chaingun,
 		"misc/w_pkup.wav",
-		"models/weapons/g_chain/tris.md2", EF_ROTATE,
-		"models/weapons/v_chain/tris.md2",
-/* icon */		"w_chaingun",
-/* pickup */	"Chaingun",
+		//"models/weapons/g_chain/tris.md2", EF_ROTATE,
+		"", 0,
+		//"models/weapons/v_chain/tris.md2",
+		"",
+		"w_chaingun",
+		"Chaingun",
 		0,
 		1,
 		"Bullets",
@@ -1379,7 +1399,7 @@ always owned, never in the world
 		WEAP_CHAINGUN,
 		NULL,
 		0,
-/* precache */ "weapons/chngnu1a.wav weapons/chngnl1a.wav weapons/machgf3b.wav` weapons/chngnd1a.wav"
+		"weapons/chngnu1a.wav weapons/chngnl1a.wav weapons/machgf3b.wav` weapons/chngnd1a.wav"
 	},
 
 /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -1393,16 +1413,18 @@ always owned, never in the world
 		"misc/am_pkup.wav",
 		"models/items/ammo/grenades/medium/tris.md2", 0,
 		"models/weapons/v_handgr/tris.md2",
-/* icon */		"a_grenades",
-/* pickup */	"Grenades",
-/* width */		3,
-		5,
-		"grenades",
+		"a_grenades", //icon
+		//"Grenades", //pickup
+		"Infantry Grenades",
+		3, //width
+		1,
+		//"grenades",
+		"infantry grenades",
 		IT_AMMO|IT_WEAPON,
 		WEAP_GRENADES,
 		NULL,
 		AMMO_GRENADES,
-/* precache */ "weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav "
+		"weapons/hgrent1a.wav weapons/hgrena1b.wav weapons/hgrenc1b.wav weapons/hgrenb1a.wav weapons/hgrenb2a.wav " //precache
 	},
 
 /*QUAKED weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -1416,16 +1438,19 @@ always owned, never in the world
 		"misc/w_pkup.wav",
 		"models/weapons/g_launch/tris.md2", EF_ROTATE,
 		"models/weapons/v_launch/tris.md2",
-/* icon */		"w_glauncher",
-/* pickup */	"Grenade Launcher",
+		"w_glauncher",
+		//"Grenade Launcher",
+		"Mutant Launcher",
 		0,
 		1,
-		"Grenades",
+		//"Grenades",
+		"Cells",
+		//"Mutant Ammo",
 		IT_WEAPON|IT_STAY_COOP,
 		WEAP_GRENADELAUNCHER,
 		NULL,
 		0,
-/* precache */ "models/objects/grenade/tris.md2 weapons/grenlf1a.wav weapons/grenlr1b.wav weapons/grenlb1b.wav"
+		"models/objects/grenade/tris.md2 weapons/grenlf1a.wav weapons/grenlr1b.wav weapons/grenlb1b.wav"
 	},
 
 /*QUAKED weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -1437,33 +1462,41 @@ always owned, never in the world
 		Drop_Weapon,
 		Weapon_RocketLauncher,
 		"misc/w_pkup.wav",
-		"models/weapons/g_rocket/tris.md2", EF_ROTATE,
-		"models/weapons/v_rocket/tris.md2",
-/* icon */		"w_rlauncher",
-/* pickup */	"Rocket Launcher",
+		//"models/weapons/g_rocket/tris.md2", EF_ROTATE,
+		"models/weapons/g_launch/tris.md2", EF_ROTATE,  //rocket launcher looks like GL
+		//"models/weapons/v_rocket/tris.md2",
+		"models/weapons/v_launch/tris.md2",  //rocket launcher looks like GL
+		//"w_rlauncher",
+		"w_glauncher",
+		//"Rocket Launcher",
+		"Titan Launcher",
 		0,
 		1,
 		"Rockets",
+		//"Large Monster Grenades",
 		IT_WEAPON|IT_STAY_COOP,
 		WEAP_ROCKETLAUNCHER,
 		NULL,
 		0,
-/* precache */ "models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2"
+		"models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2"
 	},
 
 /*QUAKED weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"weapon_hyperblaster", 
-		Pickup_Weapon,
+		//Pickup_Weapon,
+		NULL,
 		Use_Weapon,
 		Drop_Weapon,
 		Weapon_HyperBlaster,
 		"misc/w_pkup.wav",
-		"models/weapons/g_hyperb/tris.md2", EF_ROTATE,
-		"models/weapons/v_hyperb/tris.md2",
-/* icon */		"w_hyperblaster",
-/* pickup */	"HyperBlaster",
+		//"models/weapons/g_hyperb/tris.md2", EF_ROTATE,
+		"", 0,
+		//"models/weapons/v_hyperb/tris.md2",
+		"",
+		"w_hyperblaster",
+	"HyperBlaster",
 		0,
 		1,
 		"Cells",
@@ -1471,22 +1504,25 @@ always owned, never in the world
 		WEAP_HYPERBLASTER,
 		NULL,
 		0,
-/* precache */ "weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav"
+ "weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav"
 	},
 
 /*QUAKED weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"weapon_railgun", 
-		Pickup_Weapon,
+		//Pickup_Weapon,
+		NULL,
 		Use_Weapon,
 		Drop_Weapon,
 		Weapon_Railgun,
 		"misc/w_pkup.wav",
-		"models/weapons/g_rail/tris.md2", EF_ROTATE,
-		"models/weapons/v_rail/tris.md2",
-/* icon */		"w_railgun",
-/* pickup */	"Railgun",
+		//"models/weapons/g_rail/tris.md2", EF_ROTATE,
+		"", 0,
+		//"models/weapons/v_rail/tris.md2",
+		"",
+		"w_railgun",
+	"Railgun",
 		0,
 		1,
 		"Slugs",
@@ -1494,22 +1530,25 @@ always owned, never in the world
 		WEAP_RAILGUN,
 		NULL,
 		0,
-/* precache */ "weapons/rg_hum.wav"
+ "weapons/rg_hum.wav"
 	},
 
 /*QUAKED weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"weapon_bfg",
-		Pickup_Weapon,
+		//Pickup_Weapon,
+		NULL,
 		Use_Weapon,
 		Drop_Weapon,
 		Weapon_BFG,
 		"misc/w_pkup.wav",
-		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
-		"models/weapons/v_bfg/tris.md2",
-/* icon */		"w_bfg",
-/* pickup */	"BFG10K",
+		//"models/weapons/g_bfg/tris.md2", EF_ROTATE,
+		"", 0,
+		//"models/weapons/v_bfg/tris.md2",
+		"",
+		"w_bfg",
+	"BFG10K",
 		0,
 		50,
 		"Cells",
@@ -1517,7 +1556,7 @@ always owned, never in the world
 		WEAP_BFG,
 		NULL,
 		0,
-/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+		"sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
 	},
 
 	//
@@ -1528,35 +1567,39 @@ always owned, never in the world
 */
 	{
 		"ammo_shells",
-		Pickup_Ammo,
+		//Pickup_Ammo,
+		NULL, //so you don't pick the ammo up
 		NULL,
 		Drop_Ammo,
 		NULL,
 		"misc/am_pkup.wav",
-		"models/items/ammo/shells/medium/tris.md2", 0,
+		//"models/items/ammo/shells/medium/tris.md2", 0,
+		"", 0, //remove model
 		NULL,
-/* icon */		"a_shells",
-/* pickup */	"Shells",
-/* width */		3,
-		10,
+		"a_shells",
+		"Shells",
+		3,
+		30,
 		NULL,
 		IT_AMMO,
 		0,
 		NULL,
 		AMMO_SHELLS,
-/* precache */ ""
+		""
 	},
 
 /*QUAKED ammo_bullets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"ammo_bullets",
-		Pickup_Ammo,
+		//Pickup_Ammo,
+		NULL,
 		NULL,
 		Drop_Ammo,
 		NULL,
 		"misc/am_pkup.wav",
-		"models/items/ammo/bullets/medium/tris.md2", 0,
+		//"models/items/ammo/bullets/medium/tris.md2", 0,
+		"", 0,
 		NULL,
 /* icon */		"a_bullets",
 /* pickup */	"Bullets",
@@ -1574,69 +1617,79 @@ always owned, never in the world
 */
 	{
 		"ammo_cells",
-		Pickup_Ammo,
+		//Pickup_Ammo,
+		NULL,
 		NULL,
 		Drop_Ammo,
 		NULL,
 		"misc/am_pkup.wav",
-		"models/items/ammo/cells/medium/tris.md2", 0,
+		//"models/items/ammo/cells/medium/tris.md2", 0,
+		"", 0,
 		NULL,
-/* icon */		"a_cells",
-/* pickup */	"Cells",
-/* width */		3,
-		50,
+		//"a_cells",
+		"a_grenades",
+		"Cells",
+		//"Mutant Ammo",
+		3,
+		1,
 		NULL,
 		IT_AMMO,
 		0,
 		NULL,
 		AMMO_CELLS,
-/* precache */ ""
+		""
 	},
 
 /*QUAKED ammo_rockets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"ammo_rockets",
-		Pickup_Ammo,
+		//Pickup_Ammo,
+		NULL,
 		NULL,
 		Drop_Ammo,
 		NULL,
 		"misc/am_pkup.wav",
-		"models/items/ammo/rockets/medium/tris.md2", 0,
+		//"models/items/ammo/rockets/medium/tris.md2", 0,
+		"", 0,
 		NULL,
-/* icon */		"a_rockets",
-/* pickup */	"Rockets",
-/* width */		3,
-		5,
+		//"a_rockets",
+		"a_grenades",
+		"Rockets",
+		//"Large Monster Grenades",
+		3,
+		1,
 		NULL,
 		IT_AMMO,
 		0,
 		NULL,
 		AMMO_ROCKETS,
-/* precache */ ""
-	},
+		""
+	}, 
 
 /*QUAKED ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
 		"ammo_slugs",
-		Pickup_Ammo,
+		//Pickup_Ammo,
+		NULL,
 		NULL,
 		Drop_Ammo,
 		NULL,
 		"misc/am_pkup.wav",
-		"models/items/ammo/slugs/medium/tris.md2", 0,
+		//"models/items/ammo/slugs/medium/tris.md2", 0,
+		"", 0,
 		NULL,
-/* icon */		"a_slugs",
-/* pickup */	"Slugs",
-/* width */		3,
+		"a_slugs",
+		"Slugs",
+		3,
 		10,
 		NULL,
 		IT_AMMO,
 		0,
 		NULL,
 		AMMO_SLUGS,
-/* precache */ ""
+		 ""
 	},
 
 
@@ -1645,7 +1698,7 @@ always owned, never in the world
 	//
 /*QUAKED item_quad (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_quad", 
 		Pickup_Powerup,
 		Use_Quad,
@@ -1654,21 +1707,21 @@ always owned, never in the world
 		"items/pkup.wav",
 		"models/items/quaddama/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_quad",
-/* pickup */	"Quad Damage",
-/* width */		2,
+		"p_quad",
+		"Quad Damage",
+		2,
 		60,
 		NULL,
 		IT_POWERUP,
 		0,
 		NULL,
 		0,
-/* precache */ "items/damage.wav items/damage2.wav items/damage3.wav"
+		"items/damage.wav items/damage2.wav items/damage3.wav"
 	},
 
 /*QUAKED item_invulnerability (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_invulnerability",
 		Pickup_Powerup,
 		Use_Invulnerability,
@@ -1677,21 +1730,21 @@ always owned, never in the world
 		"items/pkup.wav",
 		"models/items/invulner/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_invulnerability",
-/* pickup */	"Invulnerability",
-/* width */		2,
+		"p_invulnerability",
+		"Invulnerability",
+		2,
 		300,
 		NULL,
 		IT_POWERUP,
 		0,
 		NULL,
 		0,
-/* precache */ "items/protect.wav items/protect2.wav items/protect4.wav"
+		"items/protect.wav items/protect2.wav items/protect4.wav"
 	},
 
 /*QUAKED item_silencer (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_silencer",
 		Pickup_Powerup,
 		Use_Silencer,
@@ -1700,21 +1753,21 @@ always owned, never in the world
 		"items/pkup.wav",
 		"models/items/silencer/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_silencer",
-/* pickup */	"Silencer",
-/* width */		2,
-		60,
+/* icon */// 	"p_silencer",
+/* pickup *///	"Silencer",
+/* width *///		2,
+/*		60,
 		NULL,
 		IT_POWERUP,
 		0,
 		NULL,
 		0,
-/* precache */ ""
-	},
+/* precache */// ""
+//	},
 
 /*QUAKED item_breather (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_breather",
 		Pickup_Powerup,
 		Use_Breather,
@@ -1723,21 +1776,21 @@ always owned, never in the world
 		"items/pkup.wav",
 		"models/items/breather/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_rebreather",
-/* pickup */	"Rebreather",
-/* width */		2,
-		60,
+/* icon *///		"p_rebreather",
+/* pickup *///	"Rebreather",
+/* width *///		2,
+/*		60,
 		NULL,
 		IT_STAY_COOP|IT_POWERUP,
 		0,
 		NULL,
 		0,
-/* precache */ "items/airout.wav"
-	},
+/* precache */// "items/airout.wav"
+//	},
 
 /*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_enviro",
 		Pickup_Powerup,
 		Use_Envirosuit,
@@ -1746,22 +1799,22 @@ always owned, never in the world
 		"items/pkup.wav",
 		"models/items/enviro/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_envirosuit",
-/* pickup */	"Environment Suit",
-/* width */		2,
-		60,
+/* icon *///		"p_envirosuit",
+/* pickup *///	"Environment Suit",
+/* width *///		2,
+/*		60,
 		NULL,
 		IT_STAY_COOP|IT_POWERUP,
 		0,
 		NULL,
 		0,
-/* precache */ "items/airout.wav"
-	},
+/* precache */// "items/airout.wav"
+//	},
 
 /*QUAKED item_ancient_head (.3 .3 1) (-16 -16 -16) (16 16 16)
 Special item that gives +2 to maximum health
 */
-	{
+/*	{
 		"item_ancient_head",
 		Pickup_AncientHead,
 		NULL,
@@ -1770,22 +1823,22 @@ Special item that gives +2 to maximum health
 		"items/pkup.wav",
 		"models/items/c_head/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"i_fixme",
-/* pickup */	"Ancient Head",
-/* width */		2,
-		60,
+/* icon *///		"i_fixme",
+/* pickup *///	"Ancient Head",
+/* width *///	2,
+/*		60,
 		NULL,
 		0,
 		0,
 		NULL,
 		0,
-/* precache */ ""
-	},
+/* precache */// ""
+//	},
 
 /*QUAKED item_adrenaline (.3 .3 1) (-16 -16 -16) (16 16 16)
 gives +1 to maximum health
 */
-	{
+/*	{
 		"item_adrenaline",
 		Pickup_Adrenaline,
 		NULL,
@@ -1794,21 +1847,21 @@ gives +1 to maximum health
 		"items/pkup.wav",
 		"models/items/adrenal/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_adrenaline",
-/* pickup */	"Adrenaline",
-/* width */		2,
-		60,
+/* icon *///		"p_adrenaline",
+/* pickup *///	"Adrenaline",
+/* width *///		2,
+/*		60,
 		NULL,
 		0,
 		0,
 		NULL,
 		0,
-/* precache */ ""
-	},
+/* precache */// ""
+//	},
 
 /*QUAKED item_bandolier (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_bandolier",
 		Pickup_Bandolier,
 		NULL,
@@ -1817,21 +1870,21 @@ gives +1 to maximum health
 		"items/pkup.wav",
 		"models/items/band/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"p_bandolier",
-/* pickup */	"Bandolier",
-/* width */		2,
+		"p_bandolier",
+		"Bandolier",
+		2,
 		60,
 		NULL,
 		0,
 		0,
 		NULL,
 		0,
-/* precache */ ""
+		""
 	},
 
 /*QUAKED item_pack (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
-	{
+/*	{
 		"item_pack",
 		Pickup_Pack,
 		NULL,
@@ -1840,16 +1893,16 @@ gives +1 to maximum health
 		"items/pkup.wav",
 		"models/items/pack/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"i_pack",
-/* pickup */	"Ammo Pack",
-/* width */		2,
+		"i_pack",
+		"Ammo Pack",
+		2,
 		180,
 		NULL,
 		0,
 		0,
 		NULL,
 		0,
-/* precache */ ""
+		""
 	},
 
 	//
@@ -2111,6 +2164,8 @@ void SP_item_health (edict_t *self)
 	self->count = 10;
 	SpawnItem (self, FindItem ("Health"));
 	gi.soundindex ("items/n_health.wav");
+
+	G_FreeEdict (self);
 }
 
 /*QUAKED item_health_small (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -2128,6 +2183,8 @@ void SP_item_health_small (edict_t *self)
 	SpawnItem (self, FindItem ("Health"));
 	self->style = HEALTH_IGNORE_MAX;
 	gi.soundindex ("items/s_health.wav");
+
+	G_FreeEdict (self);
 }
 
 /*QUAKED item_health_large (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -2144,6 +2201,8 @@ void SP_item_health_large (edict_t *self)
 	self->count = 25;
 	SpawnItem (self, FindItem ("Health"));
 	gi.soundindex ("items/l_health.wav");
+
+	G_FreeEdict (self);
 }
 
 /*QUAKED item_health_mega (.3 .3 1) (-16 -16 -16) (16 16 16)
@@ -2161,6 +2220,8 @@ void SP_item_health_mega (edict_t *self)
 	SpawnItem (self, FindItem ("Health"));
 	gi.soundindex ("items/m_health.wav");
 	self->style = HEALTH_IGNORE_MAX|HEALTH_TIMED;
+
+	G_FreeEdict (self);
 }
 
 

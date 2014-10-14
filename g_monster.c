@@ -41,7 +41,7 @@ void monster_fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, 
 
 void monster_fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, int flashtype)
 {
-	fire_grenade (self, start, aimdir, damage, speed, 2.5, damage+40);
+	fire_grenade (self, start, aimdir, damage, speed, 2.5, damage+40, 0);
 
 	gi.WriteByte (svc_muzzleflash2);
 	gi.WriteShort (self - g_edicts);
@@ -514,11 +514,11 @@ void monster_death_use (edict_t *self)
 
 qboolean monster_start (edict_t *self)
 {
-	if (deathmatch->value)
-	{
-		G_FreeEdict (self);
-		return false;
-	}
+	//if (deathmatch->value)
+	//{
+	//	G_FreeEdict (self);
+	//	return false;
+	//}
 
 	if ((self->spawnflags & 4) && !(self->monsterinfo.aiflags & AI_GOOD_GUY))
 	{
