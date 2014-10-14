@@ -1270,6 +1270,7 @@ void ClientBeginDeathmatch (edict_t *ent)
 		gi.multicast (ent->s.origin, MULTICAST_PVS);
 	}
 
+	//prints intro to UI
 	gi.bprintf (PRINT_HIGH, "%s entered the game\n", ent->client->pers.netname);
 	gi.cprintf (ent, PRINT_HIGH, "\n");
 	gi.cprintf (ent, PRINT_HIGH, "Welcome to the bare necessities mod!\n");

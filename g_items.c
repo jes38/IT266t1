@@ -597,6 +597,8 @@ qboolean Pickup_Armor (edict_t *ent, edict_t *other)
 	int				salvagecount;
 
 	//CRUZ COMMENT: Try commenting on your code more. I can't tell what exactly you are trying to accomplish
+
+	//This part generates a random armor type and prints the type to the UI
 	int				randID;
 	randID = rand() % 3 + 1;
 	other->amID = randID;
@@ -1124,6 +1126,9 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 }
 
 //======================================================================
+
+//removed many items from game, Changed grenade launcher to use cells ammo, changed icon and model of rocket to look like grenade launcher
+//I've tested this and the code works
 
 gitem_t	itemlist[] = 
 {
@@ -2153,6 +2158,7 @@ tank commander's head
 	{NULL}
 };
 
+//For all health items, added free edict so they don't spawn
 
 /*QUAKED item_health (.3 .3 1) (-16 -16 -16) (16 16 16)
 */

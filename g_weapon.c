@@ -206,6 +206,7 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 			{
 				T_Damage (tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, DAMAGE_BULLET, mod);
 				//CRUZ COMMENT: Could use comments here. Not very clear what is going on here.
+				//This causes damage to the firing player based on the armor reflection type
 				if ((tr.ent->amID == 2) && (mod == 4))
 					T_Damage (self, self, self, aimdir, tr.endpos, tr.plane.normal, (damage/2), kick, DAMAGE_BULLET, mod);
 				if ((tr.ent->amID == 3) && (mod == 2))
@@ -313,6 +314,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 		else
 			mod = MOD_BLASTER;
 		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
+		//This is also for armor reflection
 		if (other->amID == 1)
 			T_Damage (self->owner, self, self->owner, self->velocity, self->s.origin, plane->normal, ((self->dmg)/2), 1, DAMAGE_ENERGY, mod);
 	}
@@ -327,6 +329,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 			gi.WriteDir (plane->normal);
 		gi.multicast (self->s.origin, MULTICAST_PVS);
 	}
+	//makes blaster explosive
 	fire_grenade (self->owner, self->s.origin, self->velocity, 60, 600, 0, 100, 0);
 	Grenade_Explode (self);
 
@@ -459,10 +462,12 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 		return;
 	}
 
+	//modifies mob spawn so it doesnt spawn in floor
 	infSpawnLoc = G_Spawn();
 	VectorCopy (ent->s.origin, infSpawnLoc->s.origin);
 	infSpawnLoc->s.origin[2] += 30;
 
+	//many changes happen below to make mobs spawn
 	if (!other->takedamage)
 	{
 		if (ent->spawnflags & 1)
@@ -517,7 +522,7 @@ void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int s
 	VectorClear (grenade->maxs);
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade2/tris.md2");
 	grenade->owner = self;
-	if(grenType != 0)
+	if(grenType != 0)    //sets grenade type variable
 		self->mobType = grenType;
 	grenade->touch = Grenade_Touch;
 	grenade->nextthink = level.time + timer;

@@ -520,6 +520,8 @@ qboolean monster_start (edict_t *self)
 	//	return false;
 	//}
 
+	//This allows mosters to spawn in multiplayer
+
 	if ((self->spawnflags & 4) && !(self->monsterinfo.aiflags & AI_GOOD_GUY))
 	{
 		self->spawnflags &= ~4;

@@ -720,6 +720,8 @@ void SP_monster_infantry (edict_t *self);
 void SP_monster_mutant (edict_t *self);
 void SP_monster_tank (edict_t *self);
 
+//added some needed methods and added grenade type to fire grenade
+
 //
 // g_ptrail.c
 //

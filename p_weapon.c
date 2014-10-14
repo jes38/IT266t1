@@ -791,7 +791,7 @@ void Weapon_RocketLauncher (edict_t *ent)
 
 	Weapon_Generic (ent, 4, 12, 50, 54, pause_frames, fire_frames, Weapon_RocketLauncher_Fire);
 */
-
+//rocket launcher now fires grenades
 	static int	pause_frames[]	= {34, 51, 59, 0};
 	static int	fire_frames[]	= {6, 0};
 
@@ -1010,7 +1010,7 @@ void Machinegun_Fire (edict_t *ent)
 	AngleVectors (angles, forward, right, NULL);
 	VectorSet(offset, 0, 8, ent->viewheight-8);
 	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
-	fire_bullet (ent, start, forward, damage, kick, 150, 150, MOD_MACHINEGUN);
+	fire_bullet (ent, start, forward, damage, kick, 150, 150, MOD_MACHINEGUN);  //rifle is more accurate
 
 	gi.WriteByte (svc_muzzleflash);
 	gi.WriteShort (ent-g_edicts);
@@ -1040,6 +1040,8 @@ void Weapon_Machinegun (edict_t *ent)
 	//static int	pause_frames[]	= {23, 45, 0};
 	//static int	fire_frames[]	= {4, 5, 0};
 	//Weapon_Generic (ent, 3, 5, 45, 49, pause_frames, fire_frames, Machinegun_Fire);
+
+	//rifle fires slower
 
 	static int	pause_frames[]	= {23, 45, 0};
 	static int	fire_frames[]	= {4, 0};
@@ -1234,6 +1236,9 @@ void Weapon_Shotgun (edict_t *ent)
 	//static int	pause_frames[]	= {22, 28, 34, 0};
 	//static int	fire_frames[]	= {8, 9, 0};
 	//Weapon_Generic (ent, 7, 18, 36, 39, pause_frames, fire_frames, weapon_shotgun_fire);
+
+	//shotgun now fires full auto
+	//NOTE: there is some kind of glitch where the gun does a reload animation while walking. does not affect gameplay
 
 	static int	pause_frames[]	= {22, 28, 34, 0};
 	static int	fire_frames[]	= {8, 9, 0};

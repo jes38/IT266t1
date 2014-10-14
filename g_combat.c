@@ -103,7 +103,7 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 		monster_death_use (targ);
 	}
 
-	targ->amID = 0;
+	targ->amID = 0; //reset armor ID
 
 	targ->die (targ, inflictor, attacker, damage, point);
 }
